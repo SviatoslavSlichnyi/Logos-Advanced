@@ -1,27 +1,23 @@
-package ua.lviv.lgs.magazine.domain;
+package ua.lviv.lgs.domain;
 
 import java.util.Objects;
 
 public class User {
-
     private Integer id;
     private String firstName;
     private String lastName;
     private String email;
     private String role;
 
-    public User() {
-    }
-
-    public User(Integer id, String firstName, String lastName, String email, String role) {
-        this.id = id;
+    public User(String firstName, String lastName, String email, String role) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.role = role;
     }
 
-    public User(String firstName, String lastName, String email, String role) {
+    public User(Integer id, String firstName, String lastName, String email, String role) {
+        this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -95,5 +91,4 @@ public class User {
                 ", role='" + role + '\'' +
                 '}';
     }
-
 }
