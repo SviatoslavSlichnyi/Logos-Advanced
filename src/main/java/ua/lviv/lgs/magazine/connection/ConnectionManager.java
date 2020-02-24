@@ -1,23 +1,22 @@
-package ua.lviv.lgs.connection;
+package ua.lviv.lgs.magazine.connection;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-public class ConnectionManager {
 
-    private final static String USER_NAME = "user";
-    private final static String USER_PASSWORD = "1111";
+public class ConnectionManager  {
+
+    private final static String USER_NAME = "root";
+    private final static String USER_PASSWORD = "root";
     private final static String URL = "jdbc:mysql://localhost/i_shop";
 
     private static Connection connection;
 
-    private ConnectionManager() {
-    }
+    private ConnectionManager() {}
 
     public static Connection openConnection() {
+
         if (connection != null) {
             return connection;
         } else {
@@ -31,16 +30,19 @@ public class ConnectionManager {
             }
             throw new RuntimeException("Failed to create connection");
         }
+
     }
 
     public static void closeConnection() {
         Connection connection = ConnectionManager.openConnection();
-        try {
-            Class connectionClass = Class.forName("java.sql.Connection");
-            Method method = connectionClass.getDeclaredMethod("close");
-            method.invoke(connection);
-        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException | ClassNotFoundException e) {
-            e.printStackTrace();
+        if (connection != null) {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+                throw new RuntimeException("Connection Exception");
+            }
         }
     }
+
 }
