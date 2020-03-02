@@ -17,5 +17,7 @@ public class User {
     private String firstName;
     @NonNull
     private String lastName;
+    @NonNull
+    private String role;
 
 }

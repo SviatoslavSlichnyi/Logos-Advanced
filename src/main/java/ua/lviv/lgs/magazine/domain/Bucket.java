@@ -2,7 +2,7 @@ package ua.lviv.lgs.magazine.domain;
 
 import lombok.*;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
@@ -16,6 +16,6 @@ public class Bucket {
     @NonNull
     private Integer productId;
     @NonNull
-    private Date purchaseDate;
+    private LocalDateTime purchaseDate;
     
 }
