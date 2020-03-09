@@ -1,8 +1,8 @@
 package ua.lviv.lgs.controllers.filter;
 
 import org.apache.log4j.Logger;
-import ua.lviv.lgs.service.FilterTool;
-import ua.lviv.lgs.service.impl.FilterToolImpl;
+import ua.lviv.lgs.service.tool.FilterTool;
+import ua.lviv.lgs.service.tool.impl.FilterToolImpl;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;

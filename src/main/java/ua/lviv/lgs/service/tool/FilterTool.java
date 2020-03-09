@@ -1,4 +1,4 @@
-package ua.lviv.lgs.service;
+package ua.lviv.lgs.service.tool;
 
 public interface FilterTool {
 

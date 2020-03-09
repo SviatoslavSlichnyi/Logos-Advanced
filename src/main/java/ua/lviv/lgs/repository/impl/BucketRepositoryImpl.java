@@ -2,7 +2,10 @@ package ua.lviv.lgs.repository.impl;
 
 import ua.lviv.lgs.connection.ConnectionManager;
 import ua.lviv.lgs.domain.Bucket;
+import ua.lviv.lgs.domain.Product;
 import ua.lviv.lgs.repository.BucketRepository;
+import ua.lviv.lgs.service.ProductService;
+import ua.lviv.lgs.service.impl.ProductServiceImpl;
 
 import java.sql.*;
 import java.time.LocalDateTime;
@@ -11,17 +14,20 @@ import java.util.List;
 
 public class BucketRepositoryImpl implements BucketRepository {
 
-    private static String READ_ALL = "select * from bucket";
-    private static String CREATE = "insert into bucket(`user_id`, `product_id`, `purchase_date`) values (?,?,?)";
-    private static String READ_BY_ID = "select * from bucket where id =?";
-    private static String DELETE_BY_ID = "delete from bucket where id=?";
+    private static final String READ_ALL = "select * from bucket";
+    private static final String CREATE = "insert into bucket(`user_id`, `product_id`, `purchase_date`) values (?,?,?)";
+    private static final String READ_BY_ID = "select * from bucket where id =?";
+    private static final String DELETE_BY_ID = "delete from bucket where id=?";
+    private static final String READ_ALL_BY_USER_ID = "select * from bucket where user_id=?";
 
     private Connection connection;
     private PreparedStatement preparedStatement;
+    private ProductService productService;
     private static BucketRepository instance;
 
     public BucketRepositoryImpl() {
         connection = ConnectionManager.openConnection();
+        this.productService = ProductServiceImpl.getInstance();
     }
 
     public static BucketRepository getInstance() {
@@ -114,5 +120,25 @@ public class BucketRepositoryImpl implements BucketRepository {
         }
 
         return bucketRecords;
+    }
+
+    @Override
+    public List<Product> findProductsByUserId(Integer id) {
+        List<Product> products = new ArrayList<>();
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(READ_ALL_BY_USER_ID)) {
+            preparedStatement.setInt(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                int product_id = resultSet.getInt("product_id");
+
+                Product product = productService.findById(product_id);
+                products.add(product);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return products;
     }
 }

@@ -166,3 +166,18 @@ function objectifyForm(formArray) {//serialize data function
     }
     return result;
 }
+
+function addProduct(id) {
+    let product = {
+        productId: id
+    };
+
+    console.log("product id: " + id);
+
+    $.post("products", product, function () {
+        alert("The product was successfully added.");
+    })
+    .fail(function () {
+        alert("Error!!!\nThe product was NOT added");
+    })
+}

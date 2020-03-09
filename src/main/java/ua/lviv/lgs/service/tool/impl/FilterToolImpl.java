@@ -1,7 +1,7 @@
-package ua.lviv.lgs.service.impl;
+package ua.lviv.lgs.service.tool.impl;
 
 import org.apache.log4j.Logger;
-import ua.lviv.lgs.service.FilterTool;
+import ua.lviv.lgs.service.tool.FilterTool;
 
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;

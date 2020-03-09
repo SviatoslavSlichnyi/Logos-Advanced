@@ -19,7 +19,7 @@
 					<th scope="col">Name</th>
 					<th scope="col">Description</th>
 					<th scope="col">price</th>
-<%--					<th style="width: 5vw"></th>--%>
+					<th style="width: 5vw"></th>
 				</tr>
 			</thead>
 			<tbody>
@@ -29,7 +29,7 @@
 					<td>${product.name}</td>
 					<td>${product.description}</td>
 					<td>${product.price}</td>
-<%--					<td><button id="add-product" type="button" class="btn btn-outline-success">ADD</button></td>--%>
+					<td><button id="add-product" type="button" class="btn btn-outline-success" onclick="addProduct(${product.id})">ADD</button></td>
 				</tr>
 			</c:forEach>
 			</tbody>

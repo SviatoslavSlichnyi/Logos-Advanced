@@ -1,6 +1,7 @@
 package ua.lviv.lgs.service.impl;
 
 import ua.lviv.lgs.domain.Bucket;
+import ua.lviv.lgs.domain.Product;
 import ua.lviv.lgs.repository.BucketRepository;
 import ua.lviv.lgs.repository.impl.BucketRepositoryImpl;
 import ua.lviv.lgs.service.BucketService;
@@ -47,5 +48,10 @@ public class BucketServiceImpl implements BucketService {
     @Override
     public List<Bucket> findAll() {
         return bucketRepository.findAll();
+    }
+
+    @Override
+    public List<Product> findProductsByUserId(Integer id) {
+        return bucketRepository.findProductsByUserId(id);
     }
 }
