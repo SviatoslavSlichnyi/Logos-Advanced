@@ -7,8 +7,8 @@
     <h5 class="my-0 mr-md-auto font-weight-normal" style="color: #007bff">${userEmail}</h5>
     <nav class="my-2 my-md-0 mr-md-3">
         <a id="create-pd" class="p-2 text-dark" href="#">Create</a>
-        <a class="p-2 text-dark" href="http://localhost:8080/java-advanced/products">Products</a>
-        <a class="p-2 text-dark" href="http://localhost:8080/java-advanced/cabinet">Cabinet</a>
+        <a class="p-2 text-dark" href="http://localhost:8080/ishop/products">Products</a>
+        <a class="p-2 text-dark" href="http://localhost:8080/ishop/cabinet">Cabinet</a>
     </nav>
     <a id="log-out" class="btn btn-outline-primary" href="#">Log out</a>
 </div>

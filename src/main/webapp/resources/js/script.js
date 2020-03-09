@@ -1,10 +1,9 @@
 $(function () {
     console.log("ready");
-    $("#login-form").on('submit', (event) => onLogin(event));
-
     $("#create-ref").on('click', (event) => onRegisterRef(event));
-    $("#register-form").on('submit', (event) => onRegistration(event));
-});
+    $("#register-form").on('submit', (event) => onRegistraion(event));
+    $("#login-form").on('submit', (event) => onLogin(event));
+})
 
 
 function onLogin(event) {
@@ -12,7 +11,6 @@ function onLogin(event) {
     console.log("login form: ");
     let email = $("#email").val();
     let password = $("#pwd").val();
-
     let loginUser = {
         email: email,
         password: password
@@ -97,6 +95,31 @@ function validatePassword() {
     return isValid;
 }
 
+function onRegisterRef(event) {
+    event.preventDefault();
+    console.log("ref to register");
+    $("#register-form").show();
+    $("#login-form").hide();
+}
+
+function onRegistraion(event) {
+    event.preventDefault();
+    console.log("click registration form");
+
+    let registerUser = objectifyForm($("#register-form").serializeArray());
+    if(registrationDataIsValid(registerUser)){
+        $.post("registration", registerUser, function(){
+            alert("Succesfully register user " + registerUser.email);
+            $("#register-form").hide();
+            $("#login-form").show();
+        })
+        .fail(function() {
+            alert("Something whent whrong. Please try again ");
+        });
+    }
+    console.log(registerUser);
+  
+}
 function registrationDataIsValid(user){
     console.log("validation registration");
     let isValid = true;

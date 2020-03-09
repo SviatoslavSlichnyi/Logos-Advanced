@@ -1,6 +1,8 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1" %>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+         pageEncoding="ISO-8859-1" %>
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="ISO-8859-1">
     <title>Login</title>
@@ -8,6 +10,7 @@
     <jsp:include page="libs.jsp"/>
 
 </head>
+
 <body>
 
 <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm">
@@ -19,7 +22,7 @@
         <form id="login-form" name="login-form" class="form-signin">
             <div class="form-group">
                 <label for="email">Email:</label>
-                <input id="email" type="text" class="form-control form-control-sm"  autofocus>
+                <input id="email" type="text" class="form-control form-control-sm" autofocus>
                 <div id="email-error" class="invalid-text"></div>
             </div>
             <div class="form-group">
@@ -45,7 +48,7 @@
                 </div>
                 <div class="form-group">
                     <label for="lastName">Last Name:</label>
-                    <input id="lastName" name="lastName" class="form-control form-control-sm" type="text" >
+                    <input id="lastName" name="lastName" class="form-control form-control-sm" type="text">
                     <div id="last-name-error" class="invalid-text"></div>
                 </div>
                 <div class="form-group">
@@ -69,4 +72,5 @@
 <jsp:include page="footer.jsp"/>
 
 </body>
+
 </html>
