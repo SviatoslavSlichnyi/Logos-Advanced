@@ -13,6 +13,8 @@ import java.io.IOException;
 public class AdminFilter implements Filter {
 
     private final Logger log = Logger.getLogger(AdminFilter.class);
+    private FilterTool filterTool;
+
 
     @Override
     public void init(FilterConfig filterConfig) {
@@ -22,7 +24,7 @@ public class AdminFilter implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         log.info("filtering...");
-        FilterTool filterTool = new FilterToolImpl(request, response);
+        filterTool = new FilterToolImpl(request, response);
 
         if (filterTool.isAuthorized() && filterTool.isAuthorizedAs("ADMIN")) {
             log.debug("user's role: ADMIN");

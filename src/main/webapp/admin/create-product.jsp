@@ -7,7 +7,10 @@
 <head>
 <meta charset="ISO-8859-1">
 <title>Products</title>
-    <jsp:include page="libs.jsp"/>
+    <jsp:include page="../remote-libs.jsp"/>
+    <link rel="stylesheet" href="../resources/css/style.css">
+    <script src="resources/js/navbar.js"></script>
+    <script src="resources/js/script.js"></script>
 </head>
 <body>
 
@@ -36,7 +39,7 @@
         </div>
     </form>
 
-	<jsp:include page="footer.jsp"/>
+	<jsp:include page="../footer.jsp"/>
 
 </body>
 </html>

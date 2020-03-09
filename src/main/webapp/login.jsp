@@ -7,7 +7,8 @@
     <meta charset="ISO-8859-1">
     <title>Login</title>
 
-    <jsp:include page="libs.jsp"/>
+    <jsp:include page="remote-libs.jsp"/>
+    <jsp:include page="res.jsp"/>
 
 </head>
 

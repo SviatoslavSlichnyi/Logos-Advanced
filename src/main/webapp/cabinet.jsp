@@ -5,7 +5,8 @@
 <html>
 <head>
 	<title>Cabinet</title>
-	<jsp:include page="libs.jsp"/>
+	<jsp:include page="remote-libs.jsp"/>
+	<jsp:include page="res.jsp"/>
 </head>
 <body>
 <jsp:include page="navbar.jsp"/>
