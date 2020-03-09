@@ -20,7 +20,7 @@ public class BucketServiceImpl implements BucketService {
         return instance;
     }
 
-    public BucketServiceImpl() {
+    private BucketServiceImpl() {
         this.bucketRepository = BucketRepositoryImpl.getInstance();
     }
 
