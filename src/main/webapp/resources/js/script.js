@@ -1,7 +1,7 @@
 $(function () {
     console.log("ready");
     $("#create-ref").on('click', (event) => onRegisterRef(event));
-    $("#register-form").on('submit', (event) => onRegistraion(event));
+    $("#register-form").on('submit', (event) => onRegistration(event));
     $("#login-form").on('submit', (event) => onLogin(event));
 })
 
@@ -9,6 +9,7 @@ $(function () {
 function onLogin(event) {
     event.preventDefault();
     console.log("login form: ");
+
     let email = $("#email").val();
     let password = $("#pwd").val();
     let loginUser = {
@@ -19,11 +20,20 @@ function onLogin(event) {
 
     let isAdmin = email === "admin" && password === "admin";
 
-    if (isAdmin || dataIsValid()) {
+    if (isAdmin) {
+        $.post("login", loginUser, function () {
+            console.log("successfully logged in");
+            window.location = "admin/create-product"
+        })
+        .fail(function(){
+            alert("error log in as ADMIN");
+        });
+    }
+    else if (dataIsValid()) {
         // debugger;
         $.post("login", loginUser, function () {
             console.log("successfully logged in");
-            window.location = "cabinet.jsp"
+            window.location = "products"
         })
         .fail(function(){
             alert("error log in");
@@ -95,31 +105,6 @@ function validatePassword() {
     return isValid;
 }
 
-function onRegisterRef(event) {
-    event.preventDefault();
-    console.log("ref to register");
-    $("#register-form").show();
-    $("#login-form").hide();
-}
-
-function onRegistraion(event) {
-    event.preventDefault();
-    console.log("click registration form");
-
-    let registerUser = objectifyForm($("#register-form").serializeArray());
-    if(registrationDataIsValid(registerUser)){
-        $.post("registration", registerUser, function(){
-            alert("Succesfully register user " + registerUser.email);
-            $("#register-form").hide();
-            $("#login-form").show();
-        })
-        .fail(function() {
-            alert("Something whent whrong. Please try again ");
-        });
-    }
-    console.log(registerUser);
-  
-}
 function registrationDataIsValid(user){
     console.log("validation registration");
     let isValid = true;
@@ -167,6 +152,8 @@ function objectifyForm(formArray) {//serialize data function
     return result;
 }
 
+
+
 function addProduct(id) {
     let product = {
         productId: id
@@ -179,5 +166,22 @@ function addProduct(id) {
     })
     .fail(function () {
         alert("Error!!!\nThe product was NOT added");
-    })
+    });
+}
+
+function removeProduct(id) {
+    console.log("method: removeProduct")
+    console.log("product id: " + id);
+
+    $.ajax({
+        url: 'cabinet/' + id,
+        type: 'DELETE',
+        success: function () {
+            console.log("The product was successfully removed.");
+            location.reload();
+        },
+        error: function () {
+            alert("The product was NOT removed");
+        }
+    });
 }

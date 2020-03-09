@@ -18,7 +18,8 @@ public class BucketRepositoryImpl implements BucketRepository {
     private static final String CREATE = "insert into bucket(`user_id`, `product_id`, `purchase_date`) values (?,?,?)";
     private static final String READ_BY_ID = "select * from bucket where id =?";
     private static final String DELETE_BY_ID = "delete from bucket where id=?";
-    private static final String READ_ALL_BY_USER_ID = "select * from bucket where user_id=?";
+    private static final String READ_BY_USER_ID = "select * from bucket where user_id=?";
+    private static final String DELETE_BY_USER_ID_AND_PRODUCT_ID = "delete from bucket where user_id=? AND product_id=?";
 
     private Connection connection;
     private PreparedStatement preparedStatement;
@@ -123,11 +124,11 @@ public class BucketRepositoryImpl implements BucketRepository {
     }
 
     @Override
-    public List<Product> findProductsByUserId(Integer id) {
+    public List<Product> findProductsByUserId(Integer userId) {
         List<Product> products = new ArrayList<>();
 
-        try (PreparedStatement preparedStatement = connection.prepareStatement(READ_ALL_BY_USER_ID)) {
-            preparedStatement.setInt(1, id);
+        try (PreparedStatement preparedStatement = connection.prepareStatement(READ_BY_USER_ID)) {
+            preparedStatement.setInt(1, userId);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 int product_id = resultSet.getInt("product_id");
@@ -140,5 +141,16 @@ public class BucketRepositoryImpl implements BucketRepository {
         }
 
         return products;
+    }
+
+    @Override
+    public void deleteByUserIdAndProductId(Integer userId, Integer productId) {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(DELETE_BY_USER_ID_AND_PRODUCT_ID)) {
+            preparedStatement.setInt(1, userId);
+            preparedStatement.setInt(2, productId);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }

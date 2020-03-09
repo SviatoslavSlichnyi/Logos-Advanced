@@ -1,4 +1,3 @@
-<%--
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
          pageEncoding="ISO-8859-1" %>
 
@@ -7,9 +6,8 @@
     <h5 class="my-0 mr-md-auto font-weight-normal" style="color: #4CAF50">Magazine</h5>
     <h5 class="my-0 mr-md-auto font-weight-normal" style="color: #007bff">${userEmail}</h5>
     <nav class="my-2 my-md-0 mr-md-3">
-        <a class="p-2 text-dark" href="http://localhost:8080/java-advanced/admin/create-product">Create</a>
-        <a class="p-2 text-dark" href="http://localhost:8080/java-advanced/products-edit">Products</a>
+        <a id="create-pd" class="p-2 text-dark" href="create-product">Create</a>
+        <a class="p-2 text-dark" href="products">Products</a>
     </nav>
     <a id="log-out" class="btn btn-outline-primary" href="#">Log out</a>
 </div>
---%>

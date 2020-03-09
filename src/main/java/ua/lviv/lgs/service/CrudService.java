@@ -1,5 +1,6 @@
 package ua.lviv.lgs.service;
 
+import java.sql.SQLException;
 import java.util.List;
 
 public interface CrudService<T> {
@@ -10,7 +11,7 @@ public interface CrudService<T> {
 
     T update(T t);
 
-    void delete(Integer id);
+    void delete(Integer id) throws SQLException;
 
     List<T> findAll();
 }

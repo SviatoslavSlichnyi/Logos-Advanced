@@ -11,24 +11,24 @@
 </head>
 <body>
 
-    <jsp:include page="../navbar.jsp"/>
+    <jsp:include page="navbar.jsp"/>
 
 	 <form id="product-form" class="signup-form" <%--method="post" action="create-product"--%>>
         <div class="form-group">
             <!-- Default input -->
             <label id="nameLable" name="name" for="name" class="disabled">Name</label>
-            <input type="text" id="name" class="form-control" value="Iphone XX">
+            <input type="text" id="name" class="form-control" value="">
 <%--          <div id="product-error" class="invalid-text"></div>--%>
 
         </div>
         <div class="form-group">
             <label id="descLable" name="description" for="desc" class="disabled">Description</label>
-            <input type="text" id="desc" class="form-control" value="This is an expansive phone.">
+            <input type="text" id="desc" class="form-control" value="">
 <%--          <div id="descr-error" class="invalid-text"></div>--%>
         </div>
         <div class="form-group">
             <label id="priceLable" name="price" for="price" class="disabled">Price</label>
-            <input type="text" id="price" class="form-control" value="1299">
+            <input type="text" id="price" class="form-control" value="">
 <%--          <div id="price-error" class="invalid-text"></div>--%>
         </div>
         <div>

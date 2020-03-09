@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface BucketService extends CrudService<Bucket> {
     List<Product> findProductsByUserId(Integer id);
+    void deleteByUserIdAndProductId(Integer userId, Integer productId);
 }

@@ -16,7 +16,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
-@WebServlet("/cabinet")
+@WebServlet(urlPatterns = {"/cabinet", "/cabinet/*"})
 public class CabinetController extends HttpServlet {
 
     private static final Logger log = Logger.getLogger(CabinetController.class);
@@ -48,5 +48,22 @@ public class CabinetController extends HttpServlet {
         }
 
         req.getRequestDispatcher("cabinet.jsp").forward(req, resp);
+    }
+
+    @Override
+    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        log.info("DELETE: delete product");
+
+        Integer productId = Integer.parseInt(req.getPathInfo().substring(1));
+        log.debug("productId: " + productId);
+
+        Optional<Object> userIdObj = Optional.ofNullable(req.getSession().getAttribute("userId"));
+        if (userIdObj.isPresent()) {
+            Integer userId = (Integer) userIdObj.get();
+            log.info("removing bucket...");
+            bucketService.deleteByUserIdAndProductId(userId, productId);
+        } else {
+            log.debug("product was NOT removed");
+        }
     }
 }

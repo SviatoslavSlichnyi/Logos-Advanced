@@ -6,6 +6,7 @@ import ua.lviv.lgs.repository.UserRepository;
 import ua.lviv.lgs.repository.impl.UserRepositoryImp;
 import ua.lviv.lgs.service.UserService;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
@@ -46,7 +47,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void delete(Integer id) {
+    public void delete(Integer id) throws SQLException {
         log.debug("delete user by id: " + id);
         userRepository.delete(id);
     }

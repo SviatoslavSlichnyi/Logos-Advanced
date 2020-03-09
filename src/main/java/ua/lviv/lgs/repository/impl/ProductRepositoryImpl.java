@@ -89,13 +89,13 @@ public class ProductRepositoryImpl implements ProductRepository {
 	}
 
 	@Override
-	public void delete(Integer id) {
+	public void delete(Integer id) throws SQLException {
 		try {
 			preparedStatement = connection.prepareStatement(DELETE_BY_ID);
 			preparedStatement.setInt(1, id);
 			preparedStatement.executeUpdate();
 		} catch (SQLException e) {
-			e.printStackTrace();
+			throw new SQLException(e);
 		}
 	}
 

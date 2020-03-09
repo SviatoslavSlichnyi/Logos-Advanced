@@ -17,6 +17,7 @@
 		<th scope="col">Name</th>
 		<th scope="col">Description</th>
 		<th scope="col">price</th>
+		<th style="width: 7vw"></th>
 	</tr>
 	</thead>
 	<tbody>
@@ -26,6 +27,10 @@
 			<td>${product.name}</td>
 			<td>${product.description}</td>
 			<td>${product.price}</td>
+			<td><button id="remove-product"
+						type="button"
+						class="btn btn-outline-danger"
+						onclick="removeProduct(${product.id})">REMOVE</button></td>
 		</tr>
 	</c:forEach>
 	</tbody>

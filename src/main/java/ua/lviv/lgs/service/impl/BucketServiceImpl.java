@@ -6,6 +6,7 @@ import ua.lviv.lgs.repository.BucketRepository;
 import ua.lviv.lgs.repository.impl.BucketRepositoryImpl;
 import ua.lviv.lgs.service.BucketService;
 
+import java.sql.SQLException;
 import java.util.List;
 
 public class BucketServiceImpl implements BucketService {
@@ -41,7 +42,7 @@ public class BucketServiceImpl implements BucketService {
     }
 
     @Override
-    public void delete(Integer id) {
+    public void delete(Integer id) throws SQLException {
         bucketRepository.delete(id);
     }
 
@@ -51,7 +52,12 @@ public class BucketServiceImpl implements BucketService {
     }
 
     @Override
-    public List<Product> findProductsByUserId(Integer id) {
-        return bucketRepository.findProductsByUserId(id);
+    public List<Product> findProductsByUserId(Integer userId) {
+        return bucketRepository.findProductsByUserId(userId);
+    }
+
+    @Override
+    public void deleteByUserIdAndProductId(Integer userId, Integer productId) {
+        bucketRepository.deleteByUserIdAndProductId(userId, productId);
     }
 }

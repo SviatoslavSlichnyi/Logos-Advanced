@@ -29,10 +29,10 @@
 					<td>${product.name}</td>
 					<td>${product.description}</td>
 					<td>${product.price}</td>
-					<td><button id="add-product"
+					<td><button id="remove-product"
 								type="button"
-								class="btn btn-outline-success"
-								onclick="addProduct(${product.id})">ADD</button></td>
+								class="btn btn-outline-danger"
+								onclick="removeProduct(${product.id})">REMOVE</button></td>
 				</tr>
 			</c:forEach>
 			</tbody>

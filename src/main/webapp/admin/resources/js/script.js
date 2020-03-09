@@ -1,6 +1,5 @@
 $(function () {
     console.log("page is ready");
-
     $("#product-form").on('submit', event => onCreateProduct(event));
 });
 
@@ -19,9 +18,11 @@ function onCreateProduct(event) {
     };
 
     console.log(prod);
-    // debugger;
     $.post("create-product", prod, function () {
         alert("Successfully added.");
+        $("#name").val("");
+        $("#desc").val("");
+        $("#price").val("");
     })
     .fail(function () {
         alert("Something went wrong");
@@ -29,10 +30,19 @@ function onCreateProduct(event) {
 
 };
 
-function objectifyForm(formArray) {//serialize data function
-    let result = {};
-    for (var i = 0; i < formArray.length; i++) {
-        result[formArray[i]['name']] = formArray[i]['value'];
-    }
-    return result;
+function removeProduct(id) {
+    console.log("method: removeProduct")
+    console.log("product id: " + id);
+
+    $.ajax({
+        url: 'products/' + id,
+        type: 'DELETE',
+        success: function () {
+            console.log("The product was successfully removed.");
+            location.reload();
+        },
+        error: function () {
+            alert("The product is used by someone.");
+        }
+    });
 }

@@ -5,6 +5,7 @@ import ua.lviv.lgs.repository.ProductRepository;
 import ua.lviv.lgs.repository.impl.ProductRepositoryImpl;
 import ua.lviv.lgs.service.ProductService;
 
+import java.sql.SQLException;
 import java.util.List;
 
 public class ProductServiceImpl implements ProductService {
@@ -39,8 +40,12 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public void delete(Integer id) {
-        productRepository.delete(id);
+    public void delete(Integer id) throws SQLException {
+        try {
+            productRepository.delete(id);
+        } catch (SQLException e) {
+            throw new SQLException(e);
+        }
     }
 
     @Override
