@@ -3,6 +3,7 @@ $(function () {
     $("#create-ref").on('click', (event) => onRegisterRef(event));
     $("#register-form").on('submit', (event) => onRegistration(event));
     $("#login-form").on('submit', (event) => onLogin(event));
+    $("#product-form").on('submit', event => onCreateProduct(event));
 })
 
 
@@ -169,8 +170,8 @@ function addProduct(id) {
     });
 }
 
-function removeProduct(id) {
-    console.log("method: removeProduct")
+function removeProductFromUserList(id) {
+    console.log("method: removeProductFromUserList")
     console.log("product id: " + id);
 
     $.ajax({
@@ -182,6 +183,51 @@ function removeProduct(id) {
         },
         error: function () {
             alert("The product was NOT removed");
+        }
+    });
+}
+
+
+function onCreateProduct(event) {
+    event.preventDefault();
+    console.log("onCreateProduct method");
+
+    let name = $("#name").val();
+    let desc = $("#desc").val();
+    let price = $("#price").val();
+
+    let prod = {
+        name: name,
+        description: desc,
+        price: price
+    };
+
+    console.log(prod);
+    $.post("create-product", prod, function () {
+        alert("Successfully added.");
+        $("#name").val("");
+        $("#desc").val("");
+        $("#price").val("");
+    })
+        .fail(function () {
+            alert("Something went wrong");
+        })
+
+};
+
+function removeProduct(id) {
+    console.log("method: removeProductFromUserList")
+    console.log("product id: " + id);
+
+    $.ajax({
+        url: 'products/' + id,
+        type: 'DELETE',
+        success: function () {
+            console.log("The product was successfully removed.");
+            location.reload();
+        },
+        error: function () {
+            alert("The product is used by someone.");
         }
     });
 }

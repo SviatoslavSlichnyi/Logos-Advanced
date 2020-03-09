@@ -9,5 +9,5 @@
         <a class="p-2 text-dark" href="http://localhost:8080/ishop/products">Products</a>
         <a class="p-2 text-dark" href="http://localhost:8080/ishop/cabinet">Cabinet</a>
     </nav>
-    <a id="log-out" class="btn btn-outline-primary" href="#">Log out</a>
+    <a id="log-out" class="btn btn-outline-primary" href="logout">Log out</a>
 </div>

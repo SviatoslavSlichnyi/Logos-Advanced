@@ -9,5 +9,5 @@
         <a id="create-pd" class="p-2 text-dark" href="create-product">Create</a>
         <a class="p-2 text-dark" href="products">Products</a>
     </nav>
-    <a id="log-out" class="btn btn-outline-primary" href="#">Log out</a>
+    <a id="log-out" class="btn btn-outline-primary" href="/ishop/logout">Log out</a>
 </div>

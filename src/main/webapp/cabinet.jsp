@@ -5,8 +5,7 @@
 <html>
 <head>
 	<title>Cabinet</title>
-	<jsp:include page="remote-libs.jsp"/>
-	<jsp:include page="res.jsp"/>
+	<jsp:include page="libs.jsp"/>
 </head>
 <body>
 <jsp:include page="navbar.jsp"/>
@@ -31,7 +30,7 @@
 			<td><button id="remove-product"
 						type="button"
 						class="btn btn-outline-danger"
-						onclick="removeProduct(${product.id})">REMOVE</button></td>
+						onclick="removeProductFromUserList(${product.id})">REMOVE</button></td>
 		</tr>
 	</c:forEach>
 	</tbody>
