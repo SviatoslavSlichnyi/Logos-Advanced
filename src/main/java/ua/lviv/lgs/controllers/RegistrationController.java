@@ -16,9 +16,9 @@ import java.util.Optional;
 @WebServlet("/registration")
 public class RegistrationController extends HttpServlet {
 
-    private final Logger log = Logger.getLogger(RegistrationController.class);
+    private static final Logger log = Logger.getLogger(RegistrationController.class);
 
-    private UserService userService;
+    private final UserService userService;
 
     public RegistrationController() {
         userService = UserServiceImpl.getInstance();
@@ -26,24 +26,40 @@ public class RegistrationController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        log.info("get request");
+        log.info("GET: login page");
+
         req.getRequestDispatcher("login.jsp").forward(req, resp);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) {
-        log.info("post request");
+        log.info("POST: add user");
 
         String email = req.getParameter("email");
+
+        log.debug("param \"email\": " + email);
+
         Optional<User> fromDB = userService.findByEmail(email);
         if (fromDB.isPresent()) {
+            log.debug(email + " - this email is already registered");
             resp.setStatus(422);
         } else {
             String firstName = req.getParameter("firstName");
             String lastName = req.getParameter("lastName");
             String password = req.getParameter("password");
-            User user = new User(firstName, lastName, email, "USER", password);
-            log.debug("create new user " + user);
+
+            log.debug("param \"firstName\": " + firstName);
+            log.debug("param \"lastName\": " + lastName);
+            log.debug("param \"password\": " + password);
+
+            User user = User.builder()
+                    .firstName(firstName)
+                    .lastName(lastName)
+                    .email(email)
+                    .password(password)
+                    .role("USER")
+                    .build();
+
             userService.save(user);
         }
     }

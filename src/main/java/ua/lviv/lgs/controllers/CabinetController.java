@@ -3,9 +3,7 @@ package ua.lviv.lgs.controllers;
 import org.apache.log4j.Logger;
 import ua.lviv.lgs.domain.Product;
 import ua.lviv.lgs.service.BucketService;
-import ua.lviv.lgs.service.ProductService;
 import ua.lviv.lgs.service.impl.BucketServiceImpl;
-import ua.lviv.lgs.service.impl.ProductServiceImpl;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -20,7 +18,8 @@ import java.util.Optional;
 public class CabinetController extends HttpServlet {
 
     private static final Logger log = Logger.getLogger(CabinetController.class);
-    private BucketService bucketService;
+
+    private final BucketService bucketService;
 
     public CabinetController() {
         this.bucketService = BucketServiceImpl.getInstance();
@@ -28,19 +27,21 @@ public class CabinetController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        log.info("GET: show the user selected products");
+        log.info("GET: get list of user's products");
+
         Optional<Object> emailObj = Optional.ofNullable(req.getSession().getAttribute("userEmail"));
         Optional<Object> userIdObj = Optional.ofNullable(req.getSession().getAttribute("userId"));
-        if (emailObj.isPresent() && userIdObj.isPresent()) {
-            String email = String.valueOf(emailObj.get());
-            req.setAttribute("userEmail", email);
 
-            Integer userId = (Integer) userIdObj.get();
+        if (emailObj.isPresent() && userIdObj.isPresent()) {
+
+            String email = String.valueOf(emailObj.get());
+            int userId = (Integer) userIdObj.get();
+            List<Product> products = bucketService.findProductsByUserId(userId);
+
+            log.debug("email: " + email);
             log.debug("userId: " + userId);
 
-            List<Product> products = bucketService.findProductsByUserId(userId);
-            log.debug("products size: " + products.size());
-
+            req.setAttribute("userEmail", email);
             req.setAttribute("products", products);
         }
         else {
@@ -51,19 +52,20 @@ public class CabinetController extends HttpServlet {
     }
 
     @Override
-    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        log.info("DELETE: delete product");
+    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) {
+        log.info("DELETE: remove product from user list");
 
-        Integer productId = Integer.parseInt(req.getPathInfo().substring(1));
-        log.debug("productId: " + productId);
+        int productId = Integer.parseInt(req.getPathInfo().substring(1));
+        log.debug("product_id to delete: " + productId);
 
         Optional<Object> userIdObj = Optional.ofNullable(req.getSession().getAttribute("userId"));
         if (userIdObj.isPresent()) {
-            Integer userId = (Integer) userIdObj.get();
-            log.info("removing bucket...");
+            int userId = (Integer) userIdObj.get();
+            log.debug("product list of user_id: " + userId);
+
             bucketService.deleteByUserIdAndProductId(userId, productId);
         } else {
-            log.debug("product was NOT removed");
+            log.error("userId is NULL");
         }
     }
 }

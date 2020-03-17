@@ -2,65 +2,66 @@ package ua.lviv.lgs.service.impl;
 
 import org.apache.log4j.Logger;
 import ua.lviv.lgs.domain.User;
-import ua.lviv.lgs.repository.UserRepository;
-import ua.lviv.lgs.repository.impl.UserRepositoryImp;
+import ua.lviv.lgs.dao.UserDao;
+import ua.lviv.lgs.dao.impl.UserDaoImp;
 import ua.lviv.lgs.service.UserService;
 
-import java.sql.SQLException;
+import javax.persistence.NoResultException;
 import java.util.List;
 import java.util.Optional;
 
 public class UserServiceImpl implements UserService {
 
-    Logger log = Logger.getLogger(UserServiceImpl.class);
+    private static final Logger log = Logger.getLogger(UserServiceImpl.class);
+    private static final UserService instance = new UserServiceImpl();
 
-    private UserRepository userRepository;
-    private static UserServiceImpl userServise;
+    private final UserDao userDao;
 
     private UserServiceImpl() {
-        userRepository = UserRepositoryImp.getInstance();
+        userDao = UserDaoImp.getInstance();
     }
 
-    public static UserServiceImpl getInstance() {
-        if (userServise == null) {
-            userServise = new UserServiceImpl();
-        }
-        return userServise;
+    public static UserService getInstance() {
+        return instance;
     }
 
     @Override
     public User save(User user) {
         log.debug("save user" + user);
-        return userRepository.save(user);
+        return userDao.save(user);
     }
 
     @Override
-    public User findById(Integer id) {
-        log.debug("find user by id" + id);
-        return userRepository.findById(id);
+    public Optional<User> findById(int id) {
+        return userDao.get(id);
     }
 
     @Override
     public User update(User user) {
         log.debug("update user" + user);
-        return userRepository.update(user);
+        return userDao.update(user);
     }
 
     @Override
-    public void delete(Integer id) throws SQLException {
-        log.debug("delete user by id: " + id);
-        userRepository.delete(id);
+    public void delete(int id) {
+        Optional<User> optionalUser = userDao.get(id);
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
+            userDao.delete(user);
+        } else {
+            throw new NoResultException();
+        }
     }
 
     @Override
     public List<User> findAll() {
         log.debug("find all users");
-        return userRepository.findAll();
+        return userDao.getAll();
     }
 
     @Override
     public Optional<User> findByEmail(String email) {
         log.debug("find user by email" + email);
-        return userRepository.findByEmail(email);
+        return userDao.findByEmail(email);
     }
 }

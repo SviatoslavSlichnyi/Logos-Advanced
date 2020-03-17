@@ -15,8 +15,9 @@ import java.io.IOException;
 @WebServlet("/admin/create-product")
 public class CreateProductController extends HttpServlet {
 
-    private Logger log = Logger.getLogger(CreateProductController.class);
-    private ProductService productService;
+    private static final Logger log = Logger.getLogger(CreateProductController.class);
+
+    private final ProductService productService;
 
     public CreateProductController() {
         productService = ProductServiceImpl.getInstance();
@@ -24,21 +25,27 @@ public class CreateProductController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        log.debug("get request for admin add product page");
+        log.info("GET: creation product page");
+
         req.getRequestDispatcher("/admin/create-product.jsp").forward(req, resp);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        log.info("POST: adding the product to general list");
+
         String name = req.getParameter("name");
         String description = req.getParameter("description");
         String price = req.getParameter("price");
 
         if (isDataValid(name, description, price)) {
-            log.debug(" data is valid");
-            Product product = new Product(name, description, Double.parseDouble(price));
-            log.debug(" create new product");
+            Product product = Product.builder()
+                    .name(name)
+                    .description(description)
+                    .price(Double.parseDouble(price))
+                    .build();
             productService.save(product);
+
             resp.sendRedirect("../products");
         } else {
             resp.setStatus(402);

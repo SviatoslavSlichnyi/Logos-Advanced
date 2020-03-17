@@ -13,6 +13,8 @@ public class AuthorizationFilter implements Filter {
 
     private final Logger log = Logger.getLogger(AdminFilter.class);
     private static final String LOGIN_PAGE = "/login";
+    private FilterTool filterTool;
+
 
     @Override
     public void init(FilterConfig filterConfig) {
@@ -21,8 +23,8 @@ public class AuthorizationFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        log.info("filtering...");
-        FilterTool filterTool = new FilterToolImpl(request, response);
+        log.debug("filtering...");
+        filterTool = new FilterToolImpl(request, response);
 
         if (!filterTool.isAuthorized()) {
             log.debug("user is NOT authorized.");

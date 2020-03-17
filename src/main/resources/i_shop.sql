@@ -1,3 +1,4 @@
+DROP DATABASE i_shop;
 CREATE DATABASE i_shop;
 USE i_shop;
 
@@ -7,7 +8,8 @@ CREATE TABLE users
     email      VARCHAR(75) NOT NULL UNIQUE,
     password   VARCHAR(75) NOT NULL,
     first_name VARCHAR(45) NOT NULL,
-    last_name  VARCHAR(45) NOT NULL
+    last_name  VARCHAR(45) NOT NULL,
+    role       VARCHAR(45) NOT NULL
 );
 
 CREATE TABLE products
@@ -31,3 +33,7 @@ CREATE TABLE bucket
 DESC users;
 DESC products;
 DESC bucket;
+
+
+INSERT INTO users (email, password, first_name, last_name, role) VALUES
+('admin', 'admin', 'admin', 'admin', 'ADMIN');

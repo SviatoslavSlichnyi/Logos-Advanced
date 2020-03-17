@@ -10,15 +10,16 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.Optional;
 
 @WebServlet("/login")
 public class LoginController extends HttpServlet {
 
-    private UserService userService;
+    private static final Logger log = Logger.getLogger(LoginController.class);
 
-    private final Logger log = Logger.getLogger(LoginController.class);
+    private final UserService userService;
 
     public LoginController() {
         userService = UserServiceImpl.getInstance();
@@ -26,33 +27,41 @@ public class LoginController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        log.info("get request");
+        log.info("GET: login.jsp page");
+
         req.getRequestDispatcher("login.jsp").forward(req, resp);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        log.info("post request");
+        log.info("POST: verify login fields");
 
         String email = req.getParameter("email");
         String password = req.getParameter("password");
 
+        log.debug("param \"email\": " + email);
+        log.debug("param \"password\": " + password);
+
         Optional<User> optionalUser = userService.findByEmail(email);
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();
-            log.debug("user is present: " + user);
             if (user.getPassword().equals(password)) {
+                log.info("email and password match");
+
                 req.setAttribute("userEmail", email);
-                req.getSession().setAttribute("userEmail", email);
-                req.getSession().setAttribute("userId", user.getId());
-                req.getSession().setAttribute("role", user.getRole());
+
+                HttpSession session = req.getSession();
+                session.setAttribute("userEmail", email);
+                session.setAttribute("userId", user.getId());
+                session.setAttribute("role", user.getRole());
+
                 req.getRequestDispatcher("cabinet.jsp").forward(req, resp);
             } else {
-                log.debug("invalid password");
+                log.info("email or password DO NOT match");
                 resp.setStatus(401);
             }
         } else {
-            log.debug("not found user with email: " + email);
+            log.info("such email \""+email+"\" was NOT found");
             resp.setStatus(404);
         }
     }

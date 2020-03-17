@@ -2,48 +2,28 @@ package ua.lviv.lgs.connection;
 
 import org.apache.log4j.Logger;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 
 public class ConnectionManager {
 
     private static Logger log = Logger.getLogger(ConnectionManager.class);
+    private static EntityManagerFactory emf;
 
-    private final static String USER_NAME = "root";
-    private final static String USER_PASSWORD = "root";
-    private final static String URL = "jdbc:mysql://localhost/i_shop";
-
-    private static Connection connection;
-
-    private ConnectionManager() {
+    static {
+        emf = Persistence.createEntityManagerFactory("hibernateUnit");
+        log.debug("EntityManagerFactory was opened");
     }
 
-    public static Connection openConnection() {
-        log.info("open connection");
-        if (connection != null) {
-            return connection;
-        } else {
-            try {
-                Class.forName("com.mysql.cj.jdbc.Driver");
-                connection = DriverManager.getConnection(URL, USER_NAME, USER_PASSWORD);
-                return connection;
-            } catch (SQLException | ClassNotFoundException e) {
-                System.out.println("Failed to create connection");
-                e.printStackTrace();
-            }
-            throw new RuntimeException("Failed to create connection");
-        }
+    private ConnectionManager() { }
+
+    public static EntityManager createEntityManager() {
+        return emf.createEntityManager();
     }
 
-    public static void closeConnection() {
-        log.info("close connection");
-        if (connection != null) {
-            try {
-                connection.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
+    public static void closeEntityManagerFactory() {
+        log.debug("EntityManagerFactory was closed");
+        emf.close();
     }
 }
