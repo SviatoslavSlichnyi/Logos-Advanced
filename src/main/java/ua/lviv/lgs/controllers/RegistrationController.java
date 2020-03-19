@@ -1,6 +1,7 @@
 package ua.lviv.lgs.controllers;
 
 import org.apache.log4j.Logger;
+import ua.lviv.lgs.controllers.enumeration.UserRole;
 import ua.lviv.lgs.domain.User;
 import ua.lviv.lgs.service.UserService;
 import ua.lviv.lgs.service.impl.UserServiceImpl;
@@ -57,7 +58,7 @@ public class RegistrationController extends HttpServlet {
                     .lastName(lastName)
                     .email(email)
                     .password(password)
-                    .role("USER")
+                    .role(UserRole.USER.toString())
                     .build();
 
             userService.save(user);
