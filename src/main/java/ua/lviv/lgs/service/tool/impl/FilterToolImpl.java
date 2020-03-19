@@ -1,6 +1,7 @@
 package ua.lviv.lgs.service.tool.impl;
 
 import org.apache.log4j.Logger;
+import ua.lviv.lgs.controllers.enumeration.UserRole;
 import ua.lviv.lgs.service.tool.FilterTool;
 
 import javax.servlet.ServletRequest;
@@ -44,13 +45,13 @@ public class FilterToolImpl implements FilterTool {
     }
 
     @Override
-    public boolean isAuthorizedAs(String role) {
+    public boolean isAuthorizedAs(UserRole role) {
         HttpSession session = req.getSession();
 
         Optional<Object> userRole = Optional.ofNullable(session.getAttribute("role"));
         if (userRole.isPresent()) {
             String rol = (String) userRole.get();
-            if (rol.equalsIgnoreCase("admin")) {
+            if (rol.equalsIgnoreCase(role.toString())) {
                 return true;
             }
 

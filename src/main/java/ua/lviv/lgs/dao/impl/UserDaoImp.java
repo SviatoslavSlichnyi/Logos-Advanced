@@ -1,11 +1,12 @@
 package ua.lviv.lgs.dao.impl;
 
 import org.apache.log4j.Logger;
-import ua.lviv.lgs.connection.ConnectionManager;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 import ua.lviv.lgs.domain.User;
 import ua.lviv.lgs.dao.UserDao;
+import ua.lviv.lgs.utils.HibernateSessionFactoryUtil;
 
-import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 import java.util.List;
@@ -19,10 +20,8 @@ public class UserDaoImp implements UserDao {
     private final static String FIND_BY_EMAIL = "select u from User u where email = ?1";
     private final static String READ_ALL = "select u from User u";
 
-    private final EntityManager em;
-
     private UserDaoImp() {
-        this.em = ConnectionManager.createEntityManager();
+
     }
 
     public static UserDao getInstance() {
@@ -31,61 +30,82 @@ public class UserDaoImp implements UserDao {
 
     @Override
     public User save(User user) {
-        em.getTransaction().begin();
-        em.persist(user);
-        em.getTransaction().commit();
+        Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
+        Transaction transaction = session.beginTransaction();
+
+        session.save(user);
+
+        transaction.commit();
+        session.close();
 
         return user;
     }
 
     @Override
     public Optional<User> get(int id) throws IllegalArgumentException {
-        em.getTransaction().begin();
-        User user = em.find(User.class, id);
-        em.getTransaction().commit();
+        Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
+        Transaction transaction = session.beginTransaction();
+
+        User user = session.get(User.class, id);
+
+        transaction.commit();
+        session.close();
 
         return Optional.ofNullable(user);
     }
 
     @Override
     public User update(User user) throws IllegalArgumentException {
-        em.getTransaction().begin();
-        em.merge(user);
-        em.getTransaction().commit();
+        Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
+        Transaction transaction = session.beginTransaction();
+
+        session.merge(user);
+
+        transaction.commit();
+        session.close();
 
         return user;
     }
 
     @Override
     public void delete(User user) throws IllegalArgumentException {
-        em.getTransaction().begin();
-        em.remove(user);
-        em.getTransaction().commit();
-    }
+        Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
+        Transaction transaction = session.beginTransaction();
 
-    @Override
-    public Optional<User> findByEmail(String email) {
-        em.getTransaction().begin();
-        TypedQuery<User> query = em.createQuery(FIND_BY_EMAIL, User.class);
-        User user = null;
-        try {
-            user = query.setParameter(1, email).getSingleResult();
-        } catch (NoResultException e) {
-            em.getTransaction().commit();
-            return Optional.ofNullable(user);
-        }
-        em.getTransaction().commit();
+        session.delete(user);
 
-        return Optional.ofNullable(user);
+        transaction.commit();
+        session.close();
     }
 
     @Override
     public List<User> getAll() {
-        em.getTransaction().begin();
-        TypedQuery<User> query = em.createQuery(READ_ALL, User.class);
-        List<User> users = query.getResultList();
-        em.getTransaction().commit();
+        Session session = HibernateSessionFactoryUtil.getSessionFactory()
+                .openSession();
+        Transaction transaction = session.beginTransaction();
+
+        List<User> users = session.createQuery(READ_ALL, User.class).list();
+
+        transaction.commit();
+        session.close();
 
         return users;
+    }
+
+    @Override
+    public Optional<User> findByEmail(String email) {
+        Session session = HibernateSessionFactoryUtil.getSessionFactory().openSession();
+        Transaction transaction = session.beginTransaction();
+
+        try {
+            TypedQuery<User> query = session.createQuery(FIND_BY_EMAIL, User.class);
+            User user = query.setParameter(1, email).getSingleResult();
+            return Optional.ofNullable(user);
+        } catch (NoResultException e) {
+            return Optional.empty();
+        } finally {
+            transaction.commit();
+            session.close();
+        }
     }
 }

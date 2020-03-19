@@ -1,8 +1,6 @@
 package ua.lviv.lgs.domain;
 
 import lombok.*;
-import lombok.experimental.FieldNameConstants;
-import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import java.util.HashSet;
