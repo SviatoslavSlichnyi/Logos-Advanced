@@ -87,7 +87,7 @@ body{
 }
 .invalid {
     border-color: red;
-  }
+}
 .invalid-text {
     color: red;
 }
@@ -99,8 +99,14 @@ body{
     margin: 15px 0 0;
     color: #b3b3b3;
     font-size: 12px;
-  }
-  .form .message a {
+}
+.form .message a {
     color: #4CAF50;
     text-decoration: none;
-  }
+}
+
+#sticky-footer {
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+}
