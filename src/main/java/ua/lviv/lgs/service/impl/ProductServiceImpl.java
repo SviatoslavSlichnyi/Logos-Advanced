@@ -1,50 +1,58 @@
 package ua.lviv.lgs.service.impl;
 
+import org.apache.log4j.Logger;
+import ua.lviv.lgs.dao.ProductDao;
+import ua.lviv.lgs.dao.impl.ProductDaoImpl;
 import ua.lviv.lgs.domain.Product;
-import ua.lviv.lgs.repository.ProductRepository;
-import ua.lviv.lgs.repository.impl.ProductRepositoryImpl;
 import ua.lviv.lgs.service.ProductService;
 
+import javax.persistence.NoResultException;
 import java.util.List;
+import java.util.Optional;
 
 public class ProductServiceImpl implements ProductService {
 
-    private final ProductRepository productRepository;
-    private static ProductService instance;
+    private static final Logger log = Logger.getLogger(ProductServiceImpl.class);
+    private static final ProductService instance = new ProductServiceImpl();
+
+    private final ProductDao productDao;
 
     private ProductServiceImpl() {
-        productRepository = ProductRepositoryImpl.getInstance();
+        productDao = ProductDaoImpl.getInstance();
     }
 
     public static ProductService getInstance() {
-        if (instance == null) {
-            instance = new ProductServiceImpl();
-        }
         return instance;
     }
 
     @Override
     public Product save(Product product) {
-        return productRepository.save(product);
+        return productDao.save(product);
     }
 
     @Override
-    public Product findById(Integer id) {
-        return productRepository.findById(id);
+    public Optional<Product> findById(int id) {
+        return productDao.get(id);
     }
 
     @Override
     public Product update(Product product) {
-        return productRepository.update(product);
+        return productDao.update(product);
     }
 
     @Override
-    public void delete(Integer id) {
-        productRepository.delete(id);
+    public void delete(int id) {
+        Optional<Product> optionalProduct = productDao.get(id);
+        if (optionalProduct.isPresent()) {
+            Product product = optionalProduct.get();
+            productDao.delete(product);
+        } else {
+            throw new NoResultException();
+        }
     }
 
     @Override
     public List<Product> findAll() {
-        return productRepository.findAll();
+        return productDao.getAll();
     }
 }

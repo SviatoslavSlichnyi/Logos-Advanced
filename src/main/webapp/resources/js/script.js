@@ -1,14 +1,16 @@
 $(function () {
     console.log("ready");
     $("#create-ref").on('click', (event) => onRegisterRef(event));
-    $("#register-form").on('submit', (event) => onRegistraion(event));
+    $("#register-form").on('submit', (event) => onRegistration(event));
     $("#login-form").on('submit', (event) => onLogin(event));
+    $("#product-form").on('submit', event => onCreateProduct(event));
 })
 
 
 function onLogin(event) {
     event.preventDefault();
     console.log("login form: ");
+
     let email = $("#email").val();
     let password = $("#pwd").val();
     let loginUser = {
@@ -16,21 +18,61 @@ function onLogin(event) {
         password: password
     };
     console.log(loginUser);
-    if (dataIsValid()) {
-        debugger;
+
+    let isAdmin = email === "admin" && password === "admin";
+
+    if (isAdmin) {
         $.post("login", loginUser, function () {
-            alert("succesfuly logged in");
-            window.location = "cabinet.jsp"
+            console.log("successfully logged in");
+            window.location = "admin/create-product"
         })
-        .fail(function(){
-            alert("error log in");
-        });
+            .fail(function(){
+                alert("error log in as ADMIN");
+            });
+    }
+    else if (dataIsValid()) {
+        // debugger;
+        $.post("login", loginUser, function () {
+            console.log("successfully logged in");
+            window.location = "products"
+        })
+            .fail(function(){
+                alert("error log in");
+            });
     }
 }
 
+function onRegisterRef(event) {
+    event.preventDefault();
+    console.log("ref to register");
+    $("#register-form").show();
+    $("#login-form").hide();
+}
+
+function onRegistration(event) {
+    event.preventDefault();
+    console.log("click registration form");
+
+    let registerUser = objectifyForm($("#register-form").serializeArray());
+    if(registrationDataIsValid(registerUser)){
+        console.log("successfully validated");
+        $.post("registration", registerUser, function(){
+            alert("Succesfully register user " + registerUser.email);
+            $("#register-form").hide();
+            $("#login-form").show();
+        })
+            .fail(function() {
+                alert("Something whent whrong. Please try again ");
+            });
+    }
+    console.log(registerUser);
+
+}
+
+
 function dataIsValid() {
     console.log("dataIsValid")
-    return validateEmail() & validatePassword();
+    return validateEmail() && validatePassword();
 }
 
 function validateEmail() {
@@ -64,31 +106,6 @@ function validatePassword() {
     return isValid;
 }
 
-function onRegisterRef(event) {
-    event.preventDefault();
-    console.log("ref to register");
-    $("#register-form").show();
-    $("#login-form").hide();
-}
-
-function onRegistraion(event) {
-    event.preventDefault();
-    console.log("click registration form");
-
-    let registerUser = objectifyForm($("#register-form").serializeArray());
-    if(registrationDataIsValid(registerUser)){
-        $.post("registration", registerUser, function(){
-            alert("Succesfully register user " + registerUser.email);
-            $("#register-form").hide();
-            $("#login-form").show();
-        })
-        .fail(function() {
-            alert("Something whent whrong. Please try again ");
-        });
-    }
-    console.log(registerUser);
-  
-}
 function registrationDataIsValid(user){
     console.log("validation registration");
     let isValid = true;
@@ -134,4 +151,83 @@ function objectifyForm(formArray) {//serialize data function
         result[formArray[i]['name']] = formArray[i]['value'];
     }
     return result;
+}
+
+
+
+function addProduct(id) {
+    let product = {
+        productId: id
+    };
+
+    console.log("product id: " + id);
+
+    $.post("products", product, function () {
+        alert("The product was successfully added.");
+    })
+        .fail(function () {
+            alert("Error!!!\nThe product was NOT added");
+        });
+}
+
+function removeProductFromUserList(id) {
+    console.log("method: removeProductFromUserList")
+    console.log("product id: " + id);
+
+    $.ajax({
+        url: 'cabinet/' + id,
+        type: 'DELETE',
+        success: function () {
+            console.log("The product was successfully removed.");
+            location.reload();
+        },
+        error: function () {
+            alert("The product was NOT removed");
+        }
+    });
+}
+
+
+function onCreateProduct(event) {
+    event.preventDefault();
+    console.log("onCreateProduct method");
+
+    let name = $("#name").val();
+    let desc = $("#desc").val();
+    let price = $("#price").val();
+
+    let prod = {
+        name: name,
+        description: desc,
+        price: price
+    };
+
+    console.log(prod);
+    $.post("create-product", prod, function () {
+        alert("Successfully added.");
+        $("#name").val("");
+        $("#desc").val("");
+        $("#price").val("");
+    })
+        .fail(function () {
+            alert("Something went wrong");
+        })
+
+};
+
+function removeProduct(id) {
+    console.log("method: removeProductFromUserList")
+    console.log("product id: " + id);
+
+    $.ajax({
+        url: 'products/' + id,
+        type: 'DELETE',
+        success: function () {
+            console.log("The product was successfully removed.");
+            location.reload();
+        },
+        error: function () {
+            alert("The product is used by someone.");
+        }
+    });
 }

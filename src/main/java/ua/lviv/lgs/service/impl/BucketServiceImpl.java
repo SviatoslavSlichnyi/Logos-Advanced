@@ -1,51 +1,69 @@
 package ua.lviv.lgs.service.impl;
 
+import org.apache.log4j.Logger;
+import ua.lviv.lgs.dao.BucketDao;
+import ua.lviv.lgs.dao.impl.BucketDaoImpl;
 import ua.lviv.lgs.domain.Bucket;
-import ua.lviv.lgs.repository.BucketRepository;
-import ua.lviv.lgs.repository.impl.BucketRepositoryImpl;
+import ua.lviv.lgs.domain.Product;
 import ua.lviv.lgs.service.BucketService;
 
+import javax.persistence.NoResultException;
 import java.util.List;
+import java.util.Optional;
 
 public class BucketServiceImpl implements BucketService {
 
-    private BucketRepository bucketRepository;
+    private static final Logger log = Logger.getLogger(BucketServiceImpl.class);
+    private static final BucketService instance = new BucketServiceImpl();
 
-    private static BucketService instance;
+    private final BucketDao bucketDao;
 
-    public static BucketService getInstance() {
-        if (instance == null) {
-            instance = new BucketServiceImpl();
-        }
-        return instance;
+    private BucketServiceImpl() {
+        this.bucketDao = BucketDaoImpl.getInstance();
     }
 
-    public BucketServiceImpl() {
-        this.bucketRepository = BucketRepositoryImpl.getInstance();
+    public static BucketService getInstance() {
+        return instance;
     }
 
     @Override
     public Bucket save(Bucket bucket) {
-        return bucketRepository.save(bucket);
+        return bucketDao.save(bucket);
     }
 
     @Override
-    public Bucket findById(Integer id) {
-        return bucketRepository.findById(id);
+    public Optional<Bucket> findById(int id) {
+        return bucketDao.get(id);
     }
 
     @Override
     public Bucket update(Bucket bucket) {
-        return bucketRepository.update(bucket);
+        return bucketDao.update(bucket);
     }
 
     @Override
-    public void delete(Integer id) {
-        bucketRepository.delete(id);
+    public void delete(int id) {
+        Optional<Bucket> optionalBucket = bucketDao.get(id);
+        if (optionalBucket.isPresent()) {
+            Bucket bucket = optionalBucket.get();
+            bucketDao.delete(bucket);
+        } else {
+            throw new NoResultException();
+        }
     }
 
     @Override
     public List<Bucket> findAll() {
-        return bucketRepository.findAll();
+        return bucketDao.getAll();
+    }
+
+    @Override
+    public List<Product> findProductsByUserId(int userId) {
+        return bucketDao.findProductsByUserId(userId);
+    }
+
+    @Override
+    public void deleteByUserIdAndProductId(int userId, int productId) {
+        bucketDao.deleteByUserIdAndProductId(userId, productId);
     }
 }
