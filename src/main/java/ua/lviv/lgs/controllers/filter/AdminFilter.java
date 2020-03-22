@@ -1,6 +1,7 @@
 package ua.lviv.lgs.controllers.filter;
 
 import org.apache.log4j.Logger;
+import ua.lviv.lgs.controllers.enumeration.UserRole;
 import ua.lviv.lgs.service.tool.FilterTool;
 import ua.lviv.lgs.service.tool.impl.FilterToolImpl;
 
@@ -26,7 +27,7 @@ public class AdminFilter implements Filter {
         log.debug("filtering...");
         filterTool = new FilterToolImpl(request, response);
 
-        if (filterTool.isAuthorized() && filterTool.isAuthorizedAs("ADMIN")) {
+        if (filterTool.isAuthorized() && filterTool.isAuthorizedAs(UserRole.ADMIN)) {
             log.debug("user's role: ADMIN");
             chain.doFilter(request, response);
             return;

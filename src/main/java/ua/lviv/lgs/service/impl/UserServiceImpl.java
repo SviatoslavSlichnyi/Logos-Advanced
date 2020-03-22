@@ -1,9 +1,9 @@
 package ua.lviv.lgs.service.impl;
 
 import org.apache.log4j.Logger;
-import ua.lviv.lgs.domain.User;
 import ua.lviv.lgs.dao.UserDao;
 import ua.lviv.lgs.dao.impl.UserDaoImp;
+import ua.lviv.lgs.domain.User;
 import ua.lviv.lgs.service.UserService;
 
 import javax.persistence.NoResultException;
