@@ -58,6 +58,11 @@ public class BucketServiceImpl implements BucketService {
     }
 
     @Override
+    public boolean containsProductById(int id) {
+        return bucketDao.containsProductById(id);
+    }
+
+    @Override
     public List<Product> findProductsByUserId(int userId) {
         return bucketDao.findProductsByUserId(userId);
     }
