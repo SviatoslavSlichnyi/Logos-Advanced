@@ -1,46 +1,39 @@
 package ua.lviv.alishev.player;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 import ua.lviv.alishev.song.Music;
 
+import java.util.StringJoiner;
+
+@Component
+@Scope("prototype")
 public class MusicPlayer {
 
-    private Music music;
+    private final Music music;
+    @Value("${musicPlayer.name}")
     private String name;
-    private int volume;
+    @Value("${musicPlayer.volume}")
+    private String volume;
 
-    public MusicPlayer() {
-    }
-
-    //IoC
-    public MusicPlayer(Music music) {
+    @Autowired
+    public MusicPlayer(@Qualifier("classicalMusic") Music music) {
         this.music = music;
-    }
-
-    public Music getMusic() {
-        return music;
-    }
-
-    public void setMusic(Music music) {
-        this.music = music;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public int getVolume() {
-        return volume;
-    }
-
-    public void setVolume(int volume) {
-        this.volume = volume;
     }
 
     public void playMusic() {
         System.out.println("Playing: " + music.getSong());
+    }
+
+    @Override
+    public String toString() {
+        return new StringJoiner(", ", MusicPlayer.class.getSimpleName() + "[", "]")
+                .add("music=" + music)
+                .add("name='" + name + "'")
+                .add("volume='" + volume + "'")
+                .toString();
     }
 }

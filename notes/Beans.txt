@@ -35,6 +35,7 @@ Start Spring app -> run Spring container -> new (creation) Bean
     -> Dependency Injection -> init-method() -> Bean is ready to user
     -> destroy-method() -> Stop Spring app
 
+                Using xml config file
 Methods `init` and `destroy`
     - any method modifier
     - void (standard) or else, it doesn't matter.
@@ -43,3 +44,20 @@ destroy-method doesn't work with scope `prototype`
 factory-method
 Even using factory-method by default bean is `singleton`, so it is still needed to set scope to `prototype`
 
+
+
+                Using Annotations
+<context:component-scan base-package="ua.lviv.alishev"/> : add this package to xml file.
+
+        @Component
+We have to write @Component to class, NOT to interface.
+
+        @Autowired
+Can be used for fields, constructors and setters.
+Works with private fields too.
+We can write constructor with need field and Spring understand it
+    and Spring will add @Autowired to this constructor automatically.
+Error situation:
+    when 2 classes implements interface
+    when 0 classes has found
+In case when 2 classes realize an interface, it is used @Qualifier(<name of Bean>)
