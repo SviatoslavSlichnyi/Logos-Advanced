@@ -3,10 +3,10 @@ package ua.lviv.lgs.service.impl;
 import org.junit.jupiter.api.*;
 import org.springframework.boot.SpringApplication;
 import org.springframework.context.ApplicationContext;
-import ua.lviv.lgs.SpringMagazineApplication;
-import ua.lviv.lgs.controller.enumeration.UserRole;
-import ua.lviv.lgs.entity.User;
-import ua.lviv.lgs.service.UserService;
+import ua.lviv.magazine.SpringMagazineApplication;
+import ua.lviv.magazine.controller.enumeration.UserRole;
+import ua.lviv.magazine.entity.User;
+import ua.lviv.magazine.service.UserService;
 
 import java.util.ArrayList;
 import java.util.List;
