@@ -1,0 +1,45 @@
+                Bean
+Bean - is Java Object. When the object is created by Spring Framework it calls "Bean".
+
+We create interfaces for each class then we tell the Spring Framework which Implementation of this interface
+    has to be used.
+We have to have a constructor with parameter which has to be passed.
+You have to build your dependencies with interfaces.
+
+            Inversion of Control
+IoC is a design paradigm with the goal of giving more control to the targeted components of your application,
+    the ones getting the work done.
+
+            Dependency Injection
+Dependency injection is a pattern used to create instances of objects
+    that other objects rely on without knowing at compile time
+    which class will be used to provide that functionality.
+
+            Configuration options:
+    - xml file (old option, not the best way)
+    - Java annotation and a lit bit xml
+    - only Java Code
+
+            Scope
+Scope says how to create Bean.
+For example: Singleton
+    scopes:
+        singleton (for stateless obj),
+        prototype (for stateful obj),
+        request
+        session
+        global-session
+
+            Bean Lifecycle
+Start Spring app -> run Spring container -> new (creation) Bean
+    -> Dependency Injection -> init-method() -> Bean is ready to user
+    -> destroy-method() -> Stop Spring app
+
+Methods `init` and `destroy`
+    - any method modifier
+    - void (standard) or else, it doesn't matter.
+    - !!! without params
+destroy-method doesn't work with scope `prototype`
+factory-method
+Even using factory-method by default bean is `singleton`, so it is still needed to set scope to `prototype`
+
