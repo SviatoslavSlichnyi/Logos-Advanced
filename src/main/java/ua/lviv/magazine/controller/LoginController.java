@@ -25,7 +25,7 @@ public class LoginController {
 
     @GetMapping("/login")
     public String getLoginPage() {
-        log.info("GET: login.jsp page");
+        log.debug("GET: login.jsp page");
 
         return "login";
     }
