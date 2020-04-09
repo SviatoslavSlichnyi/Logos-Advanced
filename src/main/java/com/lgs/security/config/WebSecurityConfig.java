@@ -1,4 +1,4 @@
-package com.lviv.lgs.security.config;
+package com.lgs.security.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -12,12 +12,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
+                .csrf()
+                    .disable()
                 .authorizeRequests()
-                    .antMatchers("/", "/home").permitAll()
-                    .anyRequest().authenticated()
+                    .antMatchers("/resources/**", "/registration").permitAll()
+                .anyRequest()
+                    .authenticated()
                 .and()
                     .formLogin()
-                    .loginPage("/login")
+//                    .loginPage("/login")
+                    .defaultSuccessUrl("/home")
                     .permitAll()
                 .and()
                     .logout()
