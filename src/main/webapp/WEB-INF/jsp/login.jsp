@@ -1,8 +1,11 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 
 <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
+
+<fmt:message key="message.badCredentials" var="badCredentials" />
 
 <!DOCTYPE html>
 <html>
@@ -23,30 +26,54 @@
 
 <div class="signup-form">
     <div class="text-center">
-        <form id="login-form" name="login-form" class="form-signin ${error != null ? 'has-error' : ''}" method="post">
+        <form id="login-form" name="login-form" class="form-signin" method="post">
+
+            <c:if test="${param.error != null}">
+                <div class="alert alert-danger" role="alert">
+                    ${badCredentials}
+                </div>
+            </c:if>
+
             <div class="form-group">
-                <span>${message}</span>
-                <label for="email">Email:</label>
-
-                <input id="email" name="username" type="text" class="form-control form-control-sm" autofocus="true">
-
+                <label for="email">Username:</label>
+                <input id="email"
+                       class="form-control"
+                       type="text"
+                       name="username"
+                       onfocusout="validateEmail()">
                 <div id="email-error" class="invalid-text"></div>
             </div>
+
             <div class="form-group">
                 <label for="pwd">Password:</label>
-                <input id="pwd" name="password" type="password" class="form-control form-control-sm	">
+                <input id="pwd"
+                       class="form-control"
+                       type="password"
+                       name="password"
+                        onfocusout="validatePassword()">
                 <div id="pwd-error" class="invalid-text"></div>
             </div>
+
             <div>
-                <span>${error}</span>
-                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                <input id="login" type="submit" value="login" class="btn btn-success btn-lg btn-block">
+                <input id="login"
+                       class="btn btn-success btn-lg btn-block"
+                       type="submit"
+                       value="login">
+            </div>
+
+            <div>
+                <p class="message">
+                    Not registered?
+                    <a id="create-ref" href="${contextPath}/registration">Create an account</a>
+                </p>
             </div>
         </form>
+
     </div>
 </div>
 
 <jsp:include page="footer.jsp"/>
+
 
 </body>
 
