@@ -7,7 +7,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Login</title>
+    <title>Registration</title>
 
     <jsp:include page="libs.jsp"/>
 
@@ -24,27 +24,38 @@
             <form:form method="POST" modelAttribute="userForm" class="form-signin">
 
                 <spring:bind path="username">
-                    <div class="form-group ${status.error ? 'has-error' : ''}">
-                        <form:input type="text" path="username" class="form-control" placeholder="Username"
+                    <c:if test="${status.error == true}">
+                        <script>
+                            console.log('Username ${status.value} is wrong');
+                        </script>
+                    </c:if>
+
+                    <div class="form-group">
+                        <form:input type="text"
+                                    path="username"
+                                    class="form-control ${status.error ? 'is-invalid' : ''}"
+                                    placeholder="Username"
                                     autofocus="true"/>
                         <form:errors path="username"/>
-                        ${usernameError}
                     </div>
                 </spring:bind>
 
                 <spring:bind path="password">
-                    <div class="form-group ${status.error ? 'has-error' : ''}">
-                        <form:input type="password" path="password" class="form-control" placeholder="Password"/>
+                    <div class="form-group">
+                        <form:input type="password"
+                                    path="password"
+                                    class="form-control ${status.error ? 'is-invalid' : ''}" placeholder="Password"/>
                         <form:errors path="password"/>
                     </div>
                 </spring:bind>
 
                 <spring:bind path="passwordConfirm">
-                    <div class="form-group ${status.error ? 'has-error' : ''}">
-                        <form:input type="password" path="passwordConfirm" class="form-control"
+                    <div class="form-group">
+                        <form:input type="password"
+                                    path="passwordConfirm"
+                                    class="form-control ${status.error ? 'is-invalid' : ''}"
                                     placeholder="Confirm your password"/>
                         <form:errors path="passwordConfirm"/>
-                        ${passwordError}
                     </div>
                 </spring:bind>
 

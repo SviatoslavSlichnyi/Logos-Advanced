@@ -1,5 +1,6 @@
 package com.lgs.security.controller;
 
+import com.lgs.security.controller.validator.UserValidator;
 import com.lgs.security.entity.User;
 import com.lgs.security.service.UserService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -15,10 +16,12 @@ import javax.validation.Valid;
 @Controller
 public class RegistrationController {
 
-    private UserService userService;
+    private final UserService userService;
+    private final UserValidator userValidator;
 
-    public RegistrationController(UserService userService) {
+    public RegistrationController(UserService userService, UserValidator userValidator) {
         this.userService = userService;
+        this.userValidator = userValidator;
     }
 
     @GetMapping("/registration")
@@ -29,23 +32,12 @@ public class RegistrationController {
     }
 
     @PostMapping("/registration")
-    public String addUser(@ModelAttribute("userForm") @Valid User userForm, BindingResult bindingResult, Model model) {
+    public String addUser(@Valid @ModelAttribute("userForm") User userForm, BindingResult bindingResult, Model model) {
+        userValidator.validate(userForm, bindingResult);
+
         if (bindingResult.hasErrors()) {
             return "registration";
         }
-
-        if (!userForm.getPassword().equals(userForm.getPasswordConfirm())) {
-            model.addAttribute("passwordError", "Passwords don't match.");
-            return "registration";
-        }
-
-        try {
-            userService.save(userForm);
-        } catch (UsernameNotFoundException e) {
-            model.addAttribute("usernameError", "User with username \""+userForm.getUsername()+"\" already exist.");
-            return "registration";
-        }
-
 
         return "redirect:login";
     }

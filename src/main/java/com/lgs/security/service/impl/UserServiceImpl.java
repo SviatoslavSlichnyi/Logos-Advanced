@@ -5,8 +5,6 @@ import com.lgs.security.entity.User;
 import com.lgs.security.exceptions.EntityNotFoundException;
 import com.lgs.security.repository.UserRepository;
 import com.lgs.security.service.UserService;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -60,6 +58,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public void delete(Long userId) {
         userRepository.deleteById(userId);
+    }
+
+    @Override
+    public boolean existsByUsername(String username) {
+        return userRepository.existsByUsername(username);
     }
 
 }
