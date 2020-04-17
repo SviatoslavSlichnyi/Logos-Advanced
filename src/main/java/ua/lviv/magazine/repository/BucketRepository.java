@@ -9,15 +9,15 @@ import ua.lviv.magazine.entity.Product;
 import java.util.List;
 
 @Repository
-public interface BucketRepository extends PagingAndSortingRepository<Bucket, Integer> {
+public interface BucketRepository extends PagingAndSortingRepository<Bucket, Long> {
 
-    boolean existsByProductId(int productId);
+    boolean existsByProductId(long productId);
 
-    boolean existsByUserIdAndProductId(int userId, int productId);
+    boolean existsByUserIdAndProductId(long userId, long productId);
 
     @Query("select b.product from Bucket b where b.user.id = ?1")
-    List<Product> findProductsByUserId(int userId);
+    List<Product> findProductsByUserId(long userId);
 
-    void deleteByUserIdAndProductId(int userId, int productId);
+    void deleteByUserIdAndProductId(long userId, long productId);
 
 }

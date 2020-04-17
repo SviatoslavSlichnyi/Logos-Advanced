@@ -1,6 +1,8 @@
 package ua.lviv.magazine.service.impl;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ua.lviv.magazine.entity.Bucket;
 import ua.lviv.magazine.entity.Product;
 import ua.lviv.magazine.repository.BucketRepository;
@@ -8,9 +10,11 @@ import ua.lviv.magazine.service.BucketService;
 import ua.lviv.magazine.service.ProductService;
 import ua.lviv.magazine.service.UserService;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
+
+@RequiredArgsConstructor
 
 @Service
 public class BucketServiceImpl implements BucketService {
@@ -19,42 +23,36 @@ public class BucketServiceImpl implements BucketService {
     private final ProductService productService;
     private final BucketRepository bucketRepository;
 
-    public BucketServiceImpl(UserService userService, ProductService productService, BucketRepository bucketRepository) {
-        this.userService = userService;
-        this.productService = productService;
-        this.bucketRepository = bucketRepository;
-    }
-
     @Override
-    public boolean existsByProductId(int id) {
+    public boolean existsByProductId(long id) {
         return bucketRepository.existsByProductId(id);
     }
 
     @Override
-    public boolean existsByUserIdAndProductId(int userId, int productId) {
+    public boolean existsByUserIdAndProductId(long userId, long productId) {
         return bucketRepository.existsByUserIdAndProductId(userId, productId);
     }
 
     @Override
-    public List<Product> findProductsByUserId(int id) {
+    public List<Product> findProductsByUserId(long id) {
         return bucketRepository.findProductsByUserId(id);
     }
 
     @Override
-    public void deleteByUserIdAndProductId(int userId, int productId) {
+    @Transactional
+    public void deleteByUserIdAndProductId(long userId, long productId) {
         bucketRepository.deleteByUserIdAndProductId(userId, productId);
     }
 
     @Override
     public Bucket save(Bucket bucket) {
-        userService.save(bucket.getUser());
-        productService.save(bucket.getProduct());
         return bucketRepository.save(bucket);
     }
 
     @Override
-    public Optional<Bucket> findById(int id) {
-        return bucketRepository.findById(id);
+    public Bucket findById(long id) {
+        return bucketRepository.findById(id).orElseThrow(
+                () -> new EntityNotFoundException("Bucket with id \"" +id+"\" was NOT found"));
     }
 
     @Override
@@ -65,7 +63,7 @@ public class BucketServiceImpl implements BucketService {
     }
 
     @Override
-    public void deleteById(int id) {
+    public void deleteById(long id) {
         bucketRepository.deleteById(id);
     }
 

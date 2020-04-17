@@ -1,23 +1,22 @@
 package ua.lviv.magazine.service.impl;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ua.lviv.magazine.entity.Product;
 import ua.lviv.magazine.repository.ProductRepository;
 import ua.lviv.magazine.service.ProductService;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
+@RequiredArgsConstructor
 
 @Service
 public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
-
-
-    public ProductServiceImpl(ProductRepository productRepository) {
-        this.productRepository = productRepository;
-    }
 
     @Override
     public Product save(Product product) {
@@ -25,8 +24,9 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Optional<Product> findById(int id) {
-        return productRepository.findById(id);
+    public Product findById(long id) {
+        return productRepository.findById(id).orElseThrow(
+                () -> new EntityNotFoundException("Product with id \"" +id+"\" was NOT found"));
     }
 
     @Override
@@ -35,7 +35,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public void deleteById(int id) {
+    public void deleteById(long id) {
         productRepository.deleteById(id);
     }
 

@@ -16,16 +16,14 @@ public class Bucket {
 
     @Id
     @GeneratedValue
-    private Integer id;
+    private Long id;
 
     @NonNull
     @ManyToOne
-//    @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
     @NonNull
     @ManyToOne
-//    @JoinColumn(name = "product_id", referencedColumnName = "id")
     private Product product;
 
     @NonNull

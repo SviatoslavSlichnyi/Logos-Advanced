@@ -7,8 +7,8 @@ import ua.lviv.magazine.entity.Product;
 import java.util.List;
 
 public interface BucketService extends CrudService<Bucket> {
-    boolean existsByProductId(int id);
-    boolean existsByUserIdAndProductId(int userId, int productId);
-    List<Product> findProductsByUserId(int id);
-    void deleteByUserIdAndProductId(int userId, int productId);
+    boolean existsByProductId(long id);
+    boolean existsByUserIdAndProductId(long userId, long productId);
+    List<Product> findProductsByUserId(long id);
+    void deleteByUserIdAndProductId(long userId, long productId);
 }

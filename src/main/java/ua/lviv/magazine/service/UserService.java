@@ -6,7 +6,7 @@ import ua.lviv.magazine.entity.User;
 import java.util.Optional;
 
 public interface UserService extends CrudService<User> {
-
-    Optional<User> findByEmail(String email);
-
+    User findByEmail(String email);
+    boolean existsByEmail(String email);
+    Optional<Long> findIdByEmail(String email);
 }

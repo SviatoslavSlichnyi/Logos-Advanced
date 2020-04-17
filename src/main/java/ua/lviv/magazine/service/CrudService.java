@@ -7,11 +7,11 @@ public interface CrudService<T> {
 
     T save(T t);
 
-    Optional<T> findById(int id);
+    T findById(long id);
 
     T update(T t);
 
-    void deleteById(int id);
+    void deleteById(long id);
 
     void deleteAll();
 
